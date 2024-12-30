@@ -131,12 +131,12 @@ The write operation in an SRAM bitcell involves flipping the stored data. The fo
 
 #### Hold Static Noise Margin
 
-![HSNM](./images/hold_snm.png)
+![HSNM](./images/hold_SNM.png)
 
 #### Read Static Noise Margin
 
-![RSNM](./images/read_snm.png)
+![RSNM](./images/read_SNM.png)
 
 #### Write Static Noise Margin
 
-![WSNM](./images/write_snm.png)
+![WSNM](./images/write_SNM.png)
