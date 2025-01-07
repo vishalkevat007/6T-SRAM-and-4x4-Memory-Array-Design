@@ -126,9 +126,11 @@ The write operation in an SRAM bitcell involves flipping the stored data. The fo
 ### Transistor Sizing for Successful Write:
 
 **Pull-Up Ratio (PR):**
+
 $$
 PR = \frac{W_3/L_3}{W_1/L_1} = \frac{W_5/L_5}{W_2/L_2}
 $$
+
 - PR determines the balance between pass-gate transistors (M1, M2) and pull-up transistors (M3, M5).
 - A **lower PR value** ensures successful write operations by favoring stronger pass-gate transistors over pull-up transistors.
 
@@ -213,4 +215,4 @@ The Write Static Noise Margin (WSNM) quantifies the ability of an SRAM bitcell t
   - From the above waveforms, the *Write SNM is calculated to be $0.34~V$.*
 
 
-
+The calculation for fitting the largest square and the plotting code for SNM measurement are available in the [**SNM_Measurements_MATLAB** folder](./SNM_Measurements_MATLAB/).
