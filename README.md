@@ -65,7 +65,7 @@ The standard 6T SRAM bitcell comprises two CMOS inverters connected in a positiv
 
 1. **Initial Conditions:** Internal storage nodes Q and QB are at '0' and '1', respectively.
 
-2. **Precharging:** Bitlines (BL and BLB) are precharged to the supply voltage ($VDD$) or an intermediate level (0 and VDD).
+2. **Precharging:** Bitlines (BL and BLB) are precharged to the supply voltage ($Vdd$) or an intermediate level (0 and Vdd).
 
 3. **Wordline Activation:** The wordline (WL) is asserted high, enabling access to the bitcell.
 
@@ -75,10 +75,19 @@ The standard 6T SRAM bitcell comprises two CMOS inverters connected in a positiv
    - The internal node holding '0' must not rise above the inverter trip-point to prevent a destructive read.
    - This is ensured by a **large enough** bitcell ratio $β$.
 
+![6T SRAM Bitcell](./images/read_0.jpg)
+![6T SRAM Bitcell](./images/read_1.jpg)
+
+**Read time:**
+   - Defined as: It is measured from the assertion of the Wordline to the point when the voltage difference on the bitlines is large enough for the sense amplifier to correctly detect and output the stored value.
+   - From the above waveforms, the write time is calculated to be $30~ps$.
+
+
 ### Transistor Sizing for Successful Read:
 
 **Bitcell Ratio (β):**
    - Defined as:
+
 $$
 \beta = \frac{W_4/L_4}{W_1/L_1} = \frac{W_6/L_6}{W_2/L_2}
 $$
@@ -98,13 +107,21 @@ The write operation in an SRAM bitcell involves flipping the stored data. The fo
 
 1. **Initial Conditions:** Internal nodes Q and QB are assumed to hold logic ‘0’ and ‘1’, respectively. Wordline (WL) is initially low ($WL = 0$).
 
-2. **Data Placement:** The new data is placed on BL, and its complement on BLB. i.e BL is kept at $VDD$ and BLB to 0
+2. **Data Placement:** The new data is placed on BL, and its complement on BLB. i.e BL is kept at $Vdd$ and BLB to 0
 
 3. **Wordline Activation:** The wordline (WL) is asserted high and hence bit lines BL and BLB are connected to the SRAM cell through the access transistors M1 and M2.
 
 4. **Node Flipping:**
    - Node QB is pulled below the trip point of inverter INV-1, initiating a feedback loop in the cross-coupled inverters.
    - As Q and QB flip states, WL is de-asserted ($WL = 0$).
+
+![6T SRAM Bitcell](./images/write_0.jpg)
+![6T SRAM Bitcell](./images/write_1.jpg)
+
+**Write time:**
+   - Defined as: The *write time* of an SRAM cell is calculated as the time from the assertion of the Wordline to the point where the internal node voltages intersect, indicating a successful flip of the stored value.
+   - From the above waveforms, the write time is calculated to be $10~ps$.
+
 
 ### Transistor Sizing for Successful Write:
 
@@ -120,23 +137,80 @@ The write operation in an SRAM bitcell involves flipping the stored data. The fo
   - During a write operation, there is a "fight" between the pass-gate and pull-up transistors.
   - For example, if writing a logic ‘0’ while the bitcell holds a logic ‘1’:
     - M1 must pull Q low (to ground).
-    - M3 attempts to keep Q high (at VDD)).
+    - M3 attempts to keep Q high (at Vdd).
     - M1 must overpower M3 for a successful write.
 
 **Stability Trade-Offs:** 
    - Wider pass-gate transistors (lower PR) improve write success but reduce **Read SNM**, making the bitcell less stable during read operatons.
 
 
-###  SRAM Cell Stabilty
+---
 
-#### Hold Static Noise Margin
+###  SRAM Cell Stabilty Metrics
+
+### HOLD State and Hold SNM Measurement
+
+The Hold Static Noise Margin (Hold SNM) quantifies the stability of an SRAM bitcell when it is in the hold state, i.e., when it retains its data without any active read or write operations. It is defined as the maximum amount of DC noise voltage that the bitcell can tolerate at the storage nodes ($Q$ and $Qb$) while maintaining the stored value. A higher Hold SNM indicates greater stability and noise tolerance in the idle state.
+
+**HOLD State Setup**
+- **Wordline Deactivation**: $WL = 0$, turning off the access transistors $M_1$ and $M_2$.
+- **Bitline Deactivation**: Both bitlines ($BL$ and $BLB$) are disconnected from the storage nodes, ensuring no interference during the hold state.
+- **Storage Nodes**: The SRAM cell retains its data, with node $Q$ representing the stored bit.
+
+**Hold SNM Measurement**
+- The Hold VTC is measured by sweeping the voltage at the storage node $Q$ while monitoring the voltage at $Qb$. The curve reflects how much noise the SRAM cell can tolerate before the stored data flips.
 
 ![HSNM](./images/hold_SNM.png)
 
-#### Read Static Noise Margin
+**Hold Noise Margin Squares**
+- **Definition**: The hold noise margin square is the **largest square** that can fit between the $Q$ and $Qb$ VTC curves during the hold state.
+- **SNM Determination**:
+  - Measure the side lengths of both noise margin squares corresponding to $Q$ and $QB$.
+  - The **side of the smaller square** determines the **Hold SNM**, as it represents the bitcell's weakest tolerance to noise in the hold state.
+  - From the above waveforms, the *Read SNM is calculated to be $0.42~V$.*
+
+
+### READ State and Read SNM Measurement
+The Read Static Noise Margin (Read SNM) quantifies the stability of an SRAM bitcell during a read operation. It is defined as the maximum DC noise voltage that the bitcell can tolerate while retaining its stored data. It provides a critical measure of the SRAM cell's robustness against noise during the read process.
+
+**READ State Setup**
+- **Wordline Activation**: $WL = 1$, enabling the access transistors $M_1$ and $M_2$.
+- **Bitlines Activation**: Both bitlines ($BL$ and $BLB$) are biased at $Vdd$.
+
+**Read SNM Measurement**
+- During a read operation, the VTC plots for $Q$ and $Qb$ are generated by sweeping the voltage at one storage node while monitoring the other.
+- Due to process variations and transistor mismatches, the VTC curves may not be symmetric.
 
 ![RSNM](./images/read_SNM.png)
 
-#### Write Static Noise Margin
+**Read Noise Margin Squares**
+- **Definition**: The read noise margin square is the **largest square** that can fit between the $Q$ and $Qb$ VTC curves.
+- **Read SNM Determination**:
+  - Measure the side lengths of both noise margin squares corresponding to $Q$ and $Qb$.
+  - The **side of smaller square** dictates the SRAM cell's **Read SNM**, as it represents the cell's weakest tolerance to noise.
+  - From the above waveforms, the *Read SNM is calculated to be $0.202~V$.*
+
+
+### WRITE State and Write SNM Measurement
+The Write Static Noise Margin (WSNM) quantifies the ability of an SRAM bitcell to successfully write new data. It is defined as the maximum DC noise voltage that the SRAM cell can tolerate during the write operation while still allowing a correct write. The WSNM is an essential metric to assess the robustness of the bitcell against noise during a write operation.
+
+**WRITE State Setup**
+- **Wordline Activation**: $WL = 1$, enabling the access transistors $M_1$ and $M_2$.
+- **Bitlines Activation**: Bitlines ($BL$ and $BLB$) are driven to appropriate values for writing the new data to the SRAM cell.
+  - For a write "0", $BL$ is pulled low and $BLB$ is pulled high.
+  - For a write "1", $BL$ is pulled high and $BLB$ is pulled low.
+
+**Write SNM Measurement**
+- During a write operation, the VTC plots for $Q$ and $Qb$ are generated by sweeping the voltage at one storage node while monitoring the other, similar to the read state.
+- The write process, however, involves a significant change in the state of the bitcell, and the VTCs can shift significantly.
 
 ![WSNM](./images/write_SNM.png)
+
+**Write Noise Margin Squares**
+- **Definition**: The write noise margin square is the **smallest square** that can fit between the $Q$ and $Qb$ VTC curves under the write condition.
+- **Write SNM Determination**:
+  - The **side of smaller square** dictates the SRAM cell's **Write SNM**, as it represents the cell's weakest tolerance to noise during the write operation, ensuring the integrity of the written data.
+  - From the above waveforms, the *Write SNM is calculated to be $0.34~V$.*
+
+
+
