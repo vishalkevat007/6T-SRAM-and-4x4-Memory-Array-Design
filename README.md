@@ -169,7 +169,7 @@ The Hold Static Noise Margin (Hold SNM) quantifies the stability of an SRAM bitc
 - **SNM Determination**:
   - Measure the side lengths of both noise margin squares corresponding to $Q$ and $QB$.
   - The **side of the smaller square** determines the **Hold SNM**, as it represents the bitcell's weakest tolerance to noise in the hold state.
-  - From the above waveforms, the *Read SNM is calculated to be $0.42~V$.*
+  - From the above waveforms, the *Read SNM is calculated to be $0.42V$.*
 
 
 ### READ State and Read SNM Measurement
@@ -190,7 +190,7 @@ The Read Static Noise Margin (Read SNM) quantifies the stability of an SRAM bitc
 - **Read SNM Determination**:
   - Measure the side lengths of both noise margin squares corresponding to $Q$ and $QB$.
   - The **side of smaller square** dictates the SRAM cell's **Read SNM**, as it represents the cell's weakest tolerance to noise.
-  - From the above waveforms, the *Read SNM is calculated to be $0.202~V$.*
+  - From the above waveforms, the *Read SNM is calculated to be $0.202V$.*
 
 
 ### WRITE State and Write SNM Measurement
@@ -212,7 +212,7 @@ The Write Static Noise Margin (WSNM) quantifies the ability of an SRAM bitcell t
 - **Definition**: The write noise margin square is the **smallest square** that can fit between the $Q$ and $QB$ VTC curves under the write condition.
 - **Write SNM Determination**:
   - The **side of smaller square** dictates the SRAM cell's **Write SNM**, as it represents the cell's weakest tolerance to noise during the write operation, ensuring the integrity of the written data.
-  - From the above waveforms, the *Write SNM is calculated to be $0.34~V$.*
+  - From the above waveforms, the *Write SNM is calculated to be $0.34V$.*
 
 
-The calculation for fitting the largest square and the plotting code for SNM measurement are available in the [**SNM_Measurements_MATLAB** folder](./SNM_Measurements_MATLAB/).
+The calculation for fitting the largest square and the plotting code for HSNM, RSNM and WSNM measurement are available in the [**SNM_Measurements_MATLAB** folder](./SNM_Measurements_MATLAB/).
