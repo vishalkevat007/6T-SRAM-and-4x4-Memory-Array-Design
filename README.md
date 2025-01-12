@@ -148,6 +148,25 @@ $$
 
 ---
 
+###  SRAM Cell DC Power
+
+The **DC power** of an SRAM cell is calculated by analyzing the leakage currents flowing through the transistors in a steady-state (no read/write operations). It is primarily a function of the supply voltage ($V_{DD}$) and the total leakage current ($I_{leakage}$).
+
+#### Formula:
+
+$$
+P_{DC} = V_{dd} \times I_{leakage}
+$$
+
+Where:
+- $P_{DC}$ = DC power consumption (in watts)  
+- $V_{dd}$ = Supply voltage (in volts)  
+- $I_{leakage}$ = Total leakage current (in amperes) 
+
+![6T SRAM Power](./images/dc_power.jpg)
+
+---
+
 ###  SRAM Cell Stabilty Metrics
 
 ### HOLD State and Hold SNM Measurement
@@ -216,3 +235,60 @@ The Write Static Noise Margin (WSNM) quantifies the ability of an SRAM bitcell t
 
 
 The calculation for fitting the largest square and the plotting code for HSNM, RSNM and WSNM measurement are available in the [**SNM_Measurements_MATLAB**](./SNM_Measurements_MATLAB/).
+
+---
+
+###  Read and Write Operation of 4X4 SRAM Array cell
+
+#### **Peripheral Circuits Involved**
+1. **Precharge Circuit**: Precharges the bitlines to $V_{DD}$ before every read/write cycle.
+2. **Sense Amplifier**: Amplifies small differential signals during the read operation.
+3. **Write Driver**: Drives the bitlines during the write operation to overwrite the stored value.
+4. **Row Decoder**: Activates the appropriate wordline ($WL$) for the selected cell.
+
+During these operations, all peripheral circuits perform their designated functions seamlessly to ensure proper operation.
+
+The graph illustrates consecutive **read** and **write operations** in an SRAM cell, specifically:
+1. **Write 1 → Read 1**: Writing logic '1' to the cell, followed by reading the stored value ('1').
+2. **Write 0 → Read 0**: Writing logic '0' to the cell, followed by reading the stored value ('0').
+
+![READ and Write](./images/write_read.jpg)
+
+#### **Write Operation**
+- **Behavior**:
+  - The storage nodes $Q$ and $QB$ transition such that one node is pulled to $V_{DD}$ (logic '1') and the other to $V_{SS}$ (logic '0').
+  - This change is driven by the **write driver** and controlled by the **wordline (WL)** and **bitlines (BL, BLB)**.
+  
+#### **Read Operation**
+- **Behavior**:
+  - The bitlines are pre-charged to $V_{dd}$ before the read cycle.
+  - The wordline activates the **access transistors**, and the small voltage difference is amplified by the **sense amplifier** to determine the stored value.
+  - The storage nodes $Q$ and $QB$ maintain their voltages, ensuring data stability.
+
+---
+
+## Conclusion
+
+In this document, we have explored various aspects of SRAM cell design, operation, and analysis, focusing on parameters like Static Noise Margin (SNM), Read and Write operations, and DC power consumption. Through understanding the behavior of the SRAM cell during read and write cycles, as well as the role of peripheral circuits such as precharge circuits, sense amplifiers, and write drivers, we gain valuable insights into the robustness and performance of SRAMs in modern applications.
+
+The analysis of **Read SNM** and **Write SNM** serves as a key method to evaluate the stability of the SRAM bitcell under different operating conditions. We also discussed the significance of DC power consumption in evaluating SRAM efficiency, especially in terms of voltage and temperature variations.
+
+By leveraging simulations and measurements, we can further refine SRAM designs to optimize power consumption, noise immunity, and reliability. These design considerations are critical for creating efficient and robust memory systems for high-performance computing, mobile devices, and other integrated circuits. 
+
+Overall, understanding and improving SRAM cell performance remains essential for advancing modern semiconductor technologies.
+
+---
+
+## References
+
+1. Jawar Singh, Saraju P. Mohanty, and Dhiraj K. Pradhan, "Robust SRAM Designs and Analysis", [Journal/Conference Name], .
+
+2. B. Razavi, "Design of Analog CMOS Integrated Circuits", McGraw-Hill.
+
+3. P. E. Allen and D. R. Holberg, "CMOS Analog Circuit Design", Oxford University Press.
+
+4. A. J. Annema, J. M. Rabaey, and B. J. M. Van Lintel, "Low Power Design Techniques for SRAMs", IEEE Journal of Solid-State Circuits, vol. 35, no. 10, pp. 1442-1446.
+
+5. S. K. Gupta, K. K. Parhi, and S. G. Nair, "Power Optimization in SRAM Design Using Low Power Techniques", IEEE Transactions on VLSI Systems, vol. 16, no. 12, pp. 1485-1494.
+
+---
