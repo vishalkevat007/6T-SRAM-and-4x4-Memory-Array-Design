@@ -281,7 +281,7 @@ Overall, understanding and improving SRAM cell performance remains essential for
 
 ## References
 
-1. Jawar Singh, Saraju P. Mohanty, and Dhiraj K. Pradhan, "Robust SRAM Designs and Analysis", [Journal/Conference Name], .
+1. Jawar Singh, Saraju P. Mohanty, and Dhiraj K. Pradhan, "Robust SRAM Designs and Analysis".
 
 2. B. Razavi, "Design of Analog CMOS Integrated Circuits", McGraw-Hill.
 
